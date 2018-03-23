@@ -6,8 +6,10 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class VehicleController {
 
+    def valueEstimateService
+
     static namespace = 'scaffolding'
-    
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -16,7 +18,8 @@ class VehicleController {
     }
 
     def show(Vehicle vehicle) {
-        respond vehicle
+        def estimatedValue = valueEstimateService.getEstimate(vehicle)
+        respond vehicle, model:[estimatedValue: estimatedValue]
     }
 
     def create() {
